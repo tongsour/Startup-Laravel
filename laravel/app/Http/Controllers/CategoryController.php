@@ -3,36 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
-     // -- Get /api/categories
-     public function getCategories()
-     {
-         return ['message' => 'Getting list of categories'];
-     }
- 
-     // -- Post /api/categories
-     public function createCategory()
-     {
-         return ['message' => 'Creating 1 new category'];
-     }
- 
-     // -- Get /api/categories/{categoryId}
-     public function getCategory($categoryId)
-     {
-         return ['message' => 'Getting 1 category base on given categoryId'];
-     }
- 
-     // -- Patch /api/categories/{categoryId}
-     public function updateCategory($categoryId)
-     {
-         return ['message' => 'Updating 1 category base on given categoryId}'];
-     }
- 
-     // -- Delete /api/categories/{categoryId}
-     public function deleteCategory($categoryId)
-     {
-         return ['message' => 'Deleting 1 category base on given categoryId}'];
-     }
+    /**
+     * Display a listing of the resource.
+     */
+    public function getCategories()
+    {
+        $categories = Category::all();
+        return response()->json($categories);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function createCategory(Request $request)
+    {
+        $category = Category::create([
+            'name' => $request->name,
+        ]);
+        return response()->json(['message' => 'Creating a new category', 'category' => $category]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function getCategory( $categoryId)
+    {
+        $category = Category::find($categoryId);
+        return response()->json($category);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function updateCategory(Request $request, $categoryId)
+    {
+        $category = Category::find($categoryId);
+
+        $category->update($request -> all());
+        return response()->json(['message' => 'Category updated successfully', 'category' => $category]);
+    }
+
+    public function deleteCategory( $categoryId)
+    {
+        $category = Category::find($categoryId);
+        $category->delete();
+        return response()->json(['message' => 'Category deleted successfully']);
+    }
+
 }
