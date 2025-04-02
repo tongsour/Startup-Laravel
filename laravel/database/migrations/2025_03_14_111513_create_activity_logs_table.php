@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string('action');
             $table->json('changes')->nullable();
             $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->nullable(); 
         });
     }
-
+    
     /**
      * Reverse the migrations.
      */
